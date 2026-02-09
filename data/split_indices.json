@@ -1,0 +1,7 @@
+{
+  "train_count": 2602,
+  "val_count": 315,
+  "test_count": 79,
+  "seed": 42,
+  "dataset": "FLEURS"
+}

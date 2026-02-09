@@ -1,0 +1,29 @@
+[project]
+name = "stt-rl-env"
+version = "0.1.0"
+description = "A reinforcement learning environment for speech-to-text models, using OpenAI's Whisper and Groq's agent framework. This project provides a pipeline to train and evaluate STT models in an RL setting, leveraging the FLEURS dataset for multilingual audio samples."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+    "comet-ml>=3.55.0",
+    "datasets==3.6.0",
+    "dotenv>=0.9.9",
+    "evaluate>=0.4.6",
+    "ffmpeg-python>=0.2.0",
+    "gradio>=4.44.1",
+    "groq>=1.0.0",
+    "jiwer>=4.0.0",
+    "librosa>=0.10.0",
+    "numpy<2",
+    "openai>=2.17.0",
+    "openai-whisper",
+    "pyarrow>=14.0.0",
+    "python-dotenv>=1.2.1",
+    "soundfile>=0.12.1",
+    "torch==2.2.2",
+    "torchaudio>=2.2.2",
+    "transformers>=4.57.6",
+]
+
+[tool.uv.sources]
+openai-whisper = { git = "https://github.com/openai/whisper.git" }
