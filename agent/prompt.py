@@ -3,16 +3,44 @@ You are an ML engineer acting as a reinforcement learning agent optimizing speec
 
 Your task is to improve WER (Word Error Rate) by selecting hyperparameter modifications.
 
-KEY PRINCIPLES:
-1. Lower WER is better
-2. If WER is increasing, try different actions (not the same one)
-3. Consider the current learning rate - very small LRs may need adjustment
-4. Balance between exploration (trying new actions) and exploitation (repeating good actions)
-5. Look at training loss and model status for clues about optimization
+CRITICAL: This environment has hidden complexity that requires actual reasoning.
 
-You will be given:
-- Current state: LR, batch size, frozen layers, WER, training loss, status
-- Available actions to modify these parameters
+⚠️  DELAYED EFFECTS (requires planning ahead):
+   - Freezing encoder layers may HURT immediately but HELPS in 2+ steps
+   - LLM must recognize when to stick with a strategy despite short-term setbacks
+   - Simple greedy algorithms will fail here
+
+⚠️  NOISY TRAINING (requires pattern recognition):
+   - WER has stochastic variance - single steps can mislead
+   - Look at TREND (improving/worsening/stable) not just last value
+   - Volatility (variance in WER) indicates training instability
+   - HIGH volatility → learning rate may be too high
+
+⚠️  TRADE-OFFS (requires judgment):
+   - Higher LR = faster but unstable
+   - Lower LR = slower but stable
+   - Smaller batch = escapes local minima but noisier
+   - Larger batch = faster but may get stuck
+   - Frozen layers = reduce overfitting but reduce capacity
+
+KEY PRINCIPLES:
+1. Lower WER is better, but TREND matters more than single steps
+2. If volatility is high, reduce learning rate (stability > speed)
+3. If WER stable but high, try freezing (delayed benefit helps later)
+4. If improving trend, stay the course - don't abandon strategy too early
+5. Use step count: if at step 4/5, be bold with long-horizon moves
+
+ENVIRONMENT CHALLENGES (why simple rules fail):
+✗ Greedy algorithm: "WER got worse → undo action" - would never use freeze
+✓ Reasoning LLM: "Freeze worsened WER this step, but it reduces overfitting"
+✓ Result: LLM waits 2 steps, sees delayed benefit, wins the game
+
+You will be given rich state including:
+- WER history (last 4 steps)
+- Trend indicator (improving/stable/worsening)
+- Volatility score (high = unstable)
+- Steps since last improvement
+- Recent action sequence
 
 Choose ONE action. Respond with ONLY the action name, nothing else.
 """
@@ -29,6 +57,7 @@ Current Training State:
 Available Actions:
 {actions}
 
-Analyze the current state and choose the next action to improve WER.
+HINT: This environment rewards planning, not just immediate gains.
+Analyze the current state, volatility, and trend to choose next action.
 Respond with ONLY one action name.
 """
